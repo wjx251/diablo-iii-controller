@@ -4,7 +4,7 @@
         Title="暗黑破坏神3控制器" Height="330" Width="490" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" ResizeMode="CanMinimize" Icon="/DiabloController;component/3.ico">
     <Grid>
         <Image Height="300" HorizontalAlignment="Left" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="480" Margin="0" />
-        <TextBlock x:Name="txtForget" VerticalAlignment="Center" Margin="12,271,0,0" Height="20" HorizontalAlignment="Left" Width="255">
+        <TextBlock x:Name="txtForget" VerticalAlignment="Center" Margin="209,12,0,259" Height="20" HorizontalAlignment="Left" Width="112">
             <Hyperlink Name="verlink" NavigateUri="http://code.google.com/p/diablo-iii-controller/" RequestNavigate="Hyperlink_Click"></Hyperlink>
         </TextBlock>
     </Grid>

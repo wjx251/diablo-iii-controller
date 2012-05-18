@@ -8,16 +8,13 @@ namespace DiabloController
 {
     class Diablo
     {
-        static bool LEFTDOWN = false;
-        static bool RIGHTDOWN = false;
-
         static int ScreenCenterY = (int)SystemParameters.PrimaryScreenHeight / 2;
         static int ScreenCenterX = (int)SystemParameters.PrimaryScreenWidth / 2;
 
         static uint KEYEVENTF_KEYUP = 0x2;
 
         // 方向控制
-        static public void Move(float x, float y, ref bool move)
+        static public void Move(float x, float y)
         {
             if ((System.Math.Abs(x) > 0.1) || (System.Math.Abs(y) > 0.1))
             {
@@ -36,18 +33,11 @@ namespace DiabloController
                     }
                 }
                 SetCursorPos((int)(x * 200) + ScreenCenterX, (int)(y * 200) + ScreenCenterY - 40);
-
-                if (!move)
-                {
-                    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                    move = true;
-                }
-                
+                keybd_event(0x58, 0, 0, 0);
             }
             else 
             {
-                mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                move = false;
+                keybd_event(0x58, 0, KEYEVENTF_KEYUP, 0);
             }
         }
 
@@ -60,28 +50,47 @@ namespace DiabloController
             }
         }
 
+
+        // 点击
+        static public void MouseLeftClick()
+        {
+            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+        }
+
+        // 站立
+        static public void StandDown(ref bool stand)
+        {
+            if (!stand)
+            {
+                keybd_event(0x10, 0, 0, 0);
+                stand = true;
+            }
+        }
+        static public void StandUp(ref bool stand)
+        {
+            if (stand)
+            {
+                keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
+                stand = false;
+            }
+        }
+
         // 普通攻击
         static public void MouseLeftDown(ref bool left)
         {
             if (!left)
             {
-                keybd_event(0x10, 0, 0, 0);
                 mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
                 left = true;
             }
         }
-        static public void MouseLeftUp(ref bool left, ref bool move)
+        static public void MouseLeftUp(ref bool left)
         {
             if (left)
             {
                 mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
                 left = false;
-
-                if (move) 
-                {
-                    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                }
             }
         }
 
@@ -90,7 +99,6 @@ namespace DiabloController
         {
             if (!right)
             {
-                keybd_event(0x10, 0, 0, 0);
                 mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
                 right = true;
             }
@@ -100,56 +108,91 @@ namespace DiabloController
             if (right)
             {
                 mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
-                keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
                 right = false;
             }
         }
 
         // 快捷键1
-        static public void Key1()
+        static public void Key1(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("1");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("1");
+                key = true;
+            }
         }
         // 快捷键2
-        static public void Key2()
+        static public void Key2(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("2");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("2");
+                key = true;
+            }
         }
         // 快捷键3
-        static public void Key3()
+        static public void Key3(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("3");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("3");
+                key = true;
+            }
         }
         // 快捷键4
-        static public void Key4()
+        static public void Key4(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("4");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("4");
+                key = true;
+            }
         }
         // 快捷键血瓶
-        static public void KeyQ()
+        static public void KeyQ(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("q");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("q");
+                key = true;
+            }
         }
 
         // 地图
-        static public void KeyM()
+        static public void KeyM(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("m");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("m");
+                key = true;
+            }
         }
         // 退出
-        static public void KeyX()
+        static public void KeyX(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("{ESC}");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("{ESC}");
+                key = true;
+            }
         }
         // 传送门
-        static public void KeyT()
+        static public void KeyT(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("t");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("t");
+                key = true;
+            }
         }
         // 背包
-        static public void KeyI()
+        static public void KeyI(ref bool key)
         {
-            System.Windows.Forms.SendKeys.SendWait("i");
+            if (!key)
+            {
+                System.Windows.Forms.SendKeys.SendWait("i");
+                key = true;
+            }
         }
 
 

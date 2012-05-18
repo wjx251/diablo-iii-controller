@@ -27,13 +27,23 @@ namespace DiabloController
         private GamePadState gamePadState = new GamePadState();
         private DispatcherTimer timer = new DispatcherTimer();
 
-        private int selectedPlayer = 0;
         private int controllerType = 0;
         private string ver = "0.0.5";
 
-        private bool move = false;
         private bool left = false;
         private bool right = false;
+        private bool stand = false;
+
+        private bool key1 = false;
+        private bool key2 = false;
+        private bool key3 = false;
+        private bool key4 = false;
+        private bool key5 = false;
+        private bool key6 = false;
+        private bool key7 = false;
+        private bool key8 = false;
+        private bool key9 = false;
+        private bool key10 = false;
 
         public MainWindow()
         {
@@ -91,23 +101,13 @@ namespace DiabloController
                         this.Title = "暗黑破坏神3控制器（已连接普通游戏控制器）";
                     }
 
-
-
-
-
-                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON1) == JoyAPI.JOY_BUTTON1)
-                    {
-                        Diablo.Key2();
-                    }
-
-
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON2) == JoyAPI.JOY_BUTTON2)
                     {
                         Diablo.MouseLeftDown(ref left);
                     }
                     else
                     {
-                        Diablo.MouseLeftUp(ref left, ref move);
+                        Diablo.MouseLeftUp(ref left);
                     }
 
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON3) == JoyAPI.JOY_BUTTON3)
@@ -122,50 +122,97 @@ namespace DiabloController
 
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON4) == JoyAPI.JOY_BUTTON4)
                     {
-                        Diablo.Key1();
+                        Diablo.Key1(ref key1);
+                    }
+                    else
+                    {
+                        key1 = false;
+                    }
+                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON1) == JoyAPI.JOY_BUTTON1)
+                    {
+                        Diablo.Key2(ref key2);
+                    }
+                    else
+                    {
+                        key2 = false;
+                    }
+                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON7) == JoyAPI.JOY_BUTTON7)
+                    {
+                        Diablo.Key3(ref key3);
+                    }
+                    else
+                    {
+                        key3 = false;
+                    }
+                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON8) == JoyAPI.JOY_BUTTON8)
+                    {
+                        Diablo.Key4(ref key4);
+                    }
+                    else
+                    {
+                        key4 = false;
                     }
 
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON5) == JoyAPI.JOY_BUTTON5)
                     {
-                        Diablo.KeyQ();
+                        Diablo.KeyQ(ref key5);
+                    }
+                    else
+                    {
+                        key5 = false;
                     }
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON6) == JoyAPI.JOY_BUTTON5)
                     {
-                        Diablo.KeyQ();
+                        Diablo.KeyQ(ref key6);
                     }
-
-                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON7) == JoyAPI.JOY_BUTTON7)
+                    else
                     {
-                        Diablo.Key3();
-                    }
-                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON8) == JoyAPI.JOY_BUTTON8)
-                    {
-                        Diablo.Key4();
+                        key6 = false;
                     }
 
                     if (infoEx.dwPOV == JoyAPI.JOY_BUTTONUP)
                     {
                         // 上
-                        Diablo.KeyM();
+                        Diablo.KeyM(ref key7);
                     }
-                    else if (infoEx.dwPOV == JoyAPI.JOY_BUTTONDOWN)
+                    else
+                    {
+                        key7 = false;
+                    }
+                    
+                    if (infoEx.dwPOV == JoyAPI.JOY_BUTTONDOWN)
                     {
                         // 下
-                        Diablo.KeyX();
+                        Diablo.KeyX(ref key8);
                     }
-                    else if (infoEx.dwPOV == JoyAPI.JOY_BUTTONLEFT)
+                    else
+                    {
+                        key8 = false;
+                    }
+                    
+                    if (infoEx.dwPOV == JoyAPI.JOY_BUTTONLEFT)
                     {
                         // 左
-                        Diablo.KeyT();
+                        Diablo.KeyT(ref key9);
                     }
-                    else if (infoEx.dwPOV == JoyAPI.JOY_BUTTONRIGHT)
+                    else
+                    {
+                        key9 = false;
+                    }
+                    
+                    if (infoEx.dwPOV == JoyAPI.JOY_BUTTONRIGHT)
                     {
                         // 右
-                        Diablo.KeyM();
+                        Diablo.KeyM(ref key10);
                     }
+                    else
+                    {
+                        key10 = false;
+                    }
+                    
 
                     // 移动
-                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos), ref move);
+                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos));
                     Diablo.MouseMove(newXY(infoEx.dwRpos), newXY(infoEx.dwZpos));
 
 
@@ -188,7 +235,7 @@ namespace DiabloController
         private void Xbox(GamePadState gamePadState)
         {
             // 移动
-            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y, ref move);
+            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y);
             Diablo.MouseMove(gamePadState.ThumbSticks.Right.X, -gamePadState.ThumbSticks.Right.Y);
 
             // 普通攻击
@@ -198,7 +245,7 @@ namespace DiabloController
             }
             else 
             {
-                Diablo.MouseLeftUp(ref left, ref move);
+                Diablo.MouseLeftUp(ref left);
             }
 
 
@@ -215,47 +262,98 @@ namespace DiabloController
             // 1234
             if (gamePadState.Buttons.X == ButtonState.Pressed)
             {
-                Diablo.Key1();
+                Diablo.Key1(ref key1);
             }
+            else 
+            {
+                key1 = false;
+            }
+
             if (gamePadState.Buttons.Y == ButtonState.Pressed)
             {
-                Diablo.Key2();
+                Diablo.Key2(ref key2);
             }
+            else
+            {
+                key2 = false;
+            }
+
             if (gamePadState.Triggers.Left > 0.5)
             {
-                Diablo.Key3();
+                Diablo.StandDown(ref stand);
+            }
+            else
+            {
+                Diablo.StandUp(ref stand);
+            }
+
+            if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+            {
+                Diablo.Key3(ref key3);
+            }
+            else
+            {
+                key3 = false;
             }
             if (gamePadState.Triggers.Right > 0.5)
             {
-                Diablo.Key4();
+                Diablo.Key4(ref key4);
+            }
+            else
+            {
+                key4 = false;
             }
 
             // 喝血瓶
             if (gamePadState.Buttons.LeftShoulder == ButtonState.Pressed)
             {
-                Diablo.KeyQ();
+                Diablo.KeyQ(ref key6);
             }
-            if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+            else
             {
-                Diablo.KeyQ();
+                key6 = false;
             }
 
 
             if (gamePadState.DPad.Up == ButtonState.Pressed)
             {
-                Diablo.KeyM();
+                Diablo.KeyM(ref key7);
             }
+            else
+            {
+                key7 = false;
+            }
+
             if (gamePadState.DPad.Down == ButtonState.Pressed)
             {
-                Diablo.KeyX();
+                Diablo.KeyX(ref key8);
             }
+            else
+            {
+                key8 = false;
+            }
+
             if (gamePadState.DPad.Left == ButtonState.Pressed)
             {
-                Diablo.KeyT();
+                Diablo.KeyT(ref key9);
             }
+            else
+            {
+                key9 = false;
+            }
+
             if (gamePadState.DPad.Right == ButtonState.Pressed)
             {
-                Diablo.KeyI();
+                Diablo.KeyI(ref key10);
+            }
+            else
+            {
+                key10 = false;
+            }
+
+            if (gamePadState.Buttons.LeftStick == ButtonState.Pressed)
+            {
+                Diablo.MouseLeftClick();
             }
         }
     }
