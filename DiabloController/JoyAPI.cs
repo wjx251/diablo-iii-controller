@@ -25,14 +25,12 @@ namespace DiabloController
         public const int JOY_BUTTON6 = 0x0020;
         public const int JOY_BUTTON7 = 0x0040;
         public const int JOY_BUTTON8 = 0x0080;
-        public const int JOY_BUTTON9 = 0x0100;
-        public const int JOY_BUTTON10 = 0x0200;
 
-        //Button up/down
-        public const int JOY_BUTTON1CHG = 0x0100;
-        public const int JOY_BUTTON2CHG = 0x0200;
-        public const int JOY_BUTTON3CHG = 0x0400;
-        public const int JOY_BUTTON4CHG = 0x0800;
+        //
+        public const int JOY_BUTTONUP = 0x0000;
+        public const int JOY_BUTTONDOWN = 0x4650;
+        public const int JOY_BUTTONLEFT = 0x6978;
+        public const int JOY_BUTTONRIGHT = 0x2328;
         #endregion
 
         #region 手柄Id定义

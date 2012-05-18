@@ -43,7 +43,7 @@ namespace DiabloController
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            verlink.Inlines.Add("VER:" + ver + " BY JEDIWOLF@GMAIL.COM");
+            verlink.Inlines.Add("VER:" + ver);
 
             timer.Interval = TimeSpan.FromMilliseconds(20);
             timer.Tick += new EventHandler(timer_Tick);
@@ -124,22 +124,22 @@ namespace DiabloController
                         Diablo.Key4();
                     }
 
-                    if (infoEx.dwPOV == 0)
+                    if (infoEx.dwPOV == JoyAPI.JOY_BUTTONUP)
                     {
                         // 上
                         Diablo.KeyM();
                     }
-                    else if (infoEx.dwPOV == 18000)
+                    else if (infoEx.dwPOV == JoyAPI.JOY_BUTTONDOWN)
                     {
                         // 下
                         Diablo.KeyX();
                     }
-                    else if (infoEx.dwPOV == 27000)
+                    else if (infoEx.dwPOV == JoyAPI.JOY_BUTTONLEFT)
                     {
                         // 左
                         Diablo.KeyT();
                     }
-                    else if (infoEx.dwPOV == 9000)
+                    else if (infoEx.dwPOV == JoyAPI.JOY_BUTTONRIGHT)
                     {
                         // 右
                         Diablo.KeyM();

@@ -11,3 +11,16 @@ c:\users\linying\documents\visual studio 2010\Projects\DiabloController\DiabloCo
 c:\users\linying\documents\visual studio 2010\Projects\DiabloController\DiabloController\obj\x86\Debug\GenerateResource.write.1.tlog
 c:\users\linying\documents\visual studio 2010\Projects\DiabloController\DiabloController\obj\x86\Debug\DiabloController.exe
 c:\users\linying\documents\visual studio 2010\Projects\DiabloController\DiabloController\obj\x86\Debug\DiabloController.pdb
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\DiabloController.exe
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\DiabloController.pdb
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\bin\Debug\DiabloController.exe
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\bin\Debug\DiabloController.pdb
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\MainWindow.baml
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\MainWindow.g.cs
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\App.g.cs
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\DiabloController_MarkupCompile.cache
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\DiabloController.g.resources
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\DiabloController.Properties.Resources.resources
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\LINYING\Desktop\diablo-iii-controller\DiabloController\obj\x86\Debug\GenerateResource.write.1.tlog
