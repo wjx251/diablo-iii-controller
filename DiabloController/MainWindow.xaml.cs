@@ -24,7 +24,7 @@ namespace DiabloController
     /// </summary>
     public partial class MainWindow : Window
     {
-        private GamePadState[] gamePadState = new GamePadState[4];
+        private GamePadState gamePadState = new GamePadState();
         private DispatcherTimer timer = new DispatcherTimer();
 
         private int selectedPlayer = 0;
@@ -57,8 +57,9 @@ namespace DiabloController
 
         private void TestController()
         {
+            gamePadState = GamePad.GetState(0);
             // 优先判断360控制器
-            if (gamePadState[selectedPlayer].IsConnected)
+            if (gamePadState.IsConnected)
             {
                 if (controllerType != 1)
                 {
@@ -66,7 +67,7 @@ namespace DiabloController
                     controllerType = 1;
                     this.Title = "暗黑破坏神3控制器（已连接XBOX游戏控制器）";
                 }
-                Xbox(gamePadState[selectedPlayer]);
+                Xbox(gamePadState);
             }
             else 
             {
@@ -169,8 +170,8 @@ namespace DiabloController
         private void Xbox(GamePadState gamePadState)
         {
             // 移动
-            Diablo.Move(gamePadState.ThumbSticks.Left.X, gamePadState.ThumbSticks.Left.Y);
-            Diablo.MouseMove(gamePadState.ThumbSticks.Left.X, gamePadState.ThumbSticks.Left.Y);
+            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y);
+            Diablo.MouseMove(gamePadState.ThumbSticks.Right.X, -gamePadState.ThumbSticks.Right.Y);
 
             // 普通攻击
             if (gamePadState.Buttons.A == ButtonState.Pressed)
@@ -182,8 +183,6 @@ namespace DiabloController
             // 特殊攻击
             if (gamePadState.Buttons.B == ButtonState.Pressed)
             {
-                //Microsoft.Xna.Framework.Input.GamePad.SetVibration(PlayerIndex.One, (float)0.5, (float)0.5);
-
                 Diablo.MouseRightClick();
             }
 
