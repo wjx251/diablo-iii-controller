@@ -31,6 +31,10 @@ namespace DiabloController
         private int controllerType = 0;
         private string ver = "0.0.5";
 
+        private bool move = false;
+        private bool left = false;
+        private bool right = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -95,14 +99,27 @@ namespace DiabloController
                     {
                         Diablo.Key2();
                     }
+
+
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON2) == JoyAPI.JOY_BUTTON2)
                     {
-                        Diablo.MouseRightClick();
+                        Diablo.MouseLeftDown(ref left);
                     }
+                    else
+                    {
+                        Diablo.MouseLeftUp(ref left, ref move);
+                    }
+
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON3) == JoyAPI.JOY_BUTTON3)
                     {
-                        Diablo.MouseLeftClick();
+                        Diablo.MouseRightDown(ref right);
                     }
+                    else
+                    {
+                        Diablo.MouseRightUp(ref left);
+                    }
+
+
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON4) == JoyAPI.JOY_BUTTON4)
                     {
                         Diablo.Key1();
@@ -148,7 +165,7 @@ namespace DiabloController
                     }
 
                     // 移动
-                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos));
+                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos), ref move);
                     Diablo.MouseMove(newXY(infoEx.dwRpos), newXY(infoEx.dwZpos));
 
 
@@ -171,20 +188,28 @@ namespace DiabloController
         private void Xbox(GamePadState gamePadState)
         {
             // 移动
-            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y);
+            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y, ref move);
             Diablo.MouseMove(gamePadState.ThumbSticks.Right.X, -gamePadState.ThumbSticks.Right.Y);
 
             // 普通攻击
             if (gamePadState.Buttons.A == ButtonState.Pressed)
             {
-                Diablo.MouseLeftClick();
+                Diablo.MouseLeftDown(ref left);
+            }
+            else 
+            {
+                Diablo.MouseLeftUp(ref left, ref move);
             }
 
 
             // 特殊攻击
             if (gamePadState.Buttons.B == ButtonState.Pressed)
             {
-                Diablo.MouseRightClick();
+                Diablo.MouseRightDown(ref right);
+            }
+            else
+            {
+                Diablo.MouseRightUp(ref right);
             }
 
             // 1234

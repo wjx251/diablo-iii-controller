@@ -14,11 +14,10 @@ namespace DiabloController
         static int ScreenCenterY = (int)SystemParameters.PrimaryScreenHeight / 2;
         static int ScreenCenterX = (int)SystemParameters.PrimaryScreenWidth / 2;
 
-        static uint KEYEVENTF_EXTENDEDKEY = 0x1;
         static uint KEYEVENTF_KEYUP = 0x2;
 
         // 方向控制
-        static public void Move(float x, float y)
+        static public void Move(float x, float y, ref bool move)
         {
             if ((System.Math.Abs(x) > 0.1) || (System.Math.Abs(y) > 0.1))
             {
@@ -36,16 +35,19 @@ namespace DiabloController
                         y = -(float)Math.Sin(Math.Atan(y / x));
                     }
                 }
-
-                //keybd_event(0xA0, 0, KEYEVENTF_KEYUP, 0);
-
                 SetCursorPos((int)(x * 200) + ScreenCenterX, (int)(y * 200) + ScreenCenterY - 40);
-                mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+
+                if (!move)
+                {
+                    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                    move = true;
+                }
                 
             }
             else 
             {
                 mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+                move = false;
             }
         }
 
@@ -59,52 +61,47 @@ namespace DiabloController
         }
 
         // 普通攻击
-        static public void MouseLeftClick()
+        static public void MouseLeftDown(ref bool left)
         {
-            keybd_event(0x10, 0, 0, 0);
-            MouseLeftDown();
-            MouseLeftUp();
-            keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
-        }
-        static public void MouseLeftDown()
-        {
-            if (!LEFTDOWN)
+            if (!left)
             {
+                keybd_event(0x10, 0, 0, 0);
                 mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                LEFTDOWN = true;
+                left = true;
             }
         }
-        static public void MouseLeftUp()
+        static public void MouseLeftUp(ref bool left, ref bool move)
         {
-            if (LEFTDOWN)
+            if (left)
             {
                 mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                LEFTDOWN = false;
+                keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
+                left = false;
+
+                if (move) 
+                {
+                    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                }
             }
         }
 
         // 右键攻击
-        static public void MouseRightClick()
+        static public void MouseRightDown(ref bool right)
         {
-            keybd_event(0x10, 0, 0, 0);
-            MouseRightDown();
-            MouseRightUp();
-            keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
-        }
-        static public void MouseRightDown()
-        {
-            if (!RIGHTDOWN)
+            if (!right)
             {
+                keybd_event(0x10, 0, 0, 0);
                 mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-                RIGHTDOWN = true;
+                right = true;
             }
         }
-        static public void MouseRightUp()
+        static public void MouseRightUp(ref bool right)
         {
-            if (RIGHTDOWN)
+            if (right)
             {
                 mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
-                RIGHTDOWN = false;
+                keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
+                right = false;
             }
         }
 
