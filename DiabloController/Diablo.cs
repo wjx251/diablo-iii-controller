@@ -14,11 +14,12 @@ namespace DiabloController
         static int ScreenCenterY = (int)SystemParameters.PrimaryScreenHeight / 2;
         static int ScreenCenterX = (int)SystemParameters.PrimaryScreenWidth / 2;
 
+        static uint KEYEVENTF_EXTENDEDKEY = 0x1;
+        static uint KEYEVENTF_KEYUP = 0x2;
+
         // 方向控制
         static public void Move(float x, float y)
         {
-            
-
             if ((System.Math.Abs(x) > 0.1) || (System.Math.Abs(y) > 0.1))
             {
                 // 作用范围
@@ -36,7 +37,15 @@ namespace DiabloController
                     }
                 }
 
-                SetCursorPos((int)(x * 200) + ScreenCenterX, (int)(y * 200) + ScreenCenterY);
+                //keybd_event(0xA0, 0, KEYEVENTF_KEYUP, 0);
+
+                SetCursorPos((int)(x * 200) + ScreenCenterX, (int)(y * 200) + ScreenCenterY - 40);
+                mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                
+            }
+            else 
+            {
+                mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
             }
         }
 
@@ -52,14 +61,15 @@ namespace DiabloController
         // 普通攻击
         static public void MouseLeftClick()
         {
+            keybd_event(0x10, 0, 0, 0);
             MouseLeftDown();
             MouseLeftUp();
+            keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
         }
         static public void MouseLeftDown()
         {
             if (!LEFTDOWN)
             {
-                System.Windows.Forms.SendKeys.SendWait("+");
                 mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
                 LEFTDOWN = true;
             }
@@ -76,14 +86,15 @@ namespace DiabloController
         // 右键攻击
         static public void MouseRightClick()
         {
+            keybd_event(0x10, 0, 0, 0);
             MouseRightDown();
             MouseRightUp();
+            keybd_event(0x10, 0, KEYEVENTF_KEYUP, 0);
         }
         static public void MouseRightDown()
         {
             if (!RIGHTDOWN)
             {
-                System.Windows.Forms.SendKeys.SendWait("+");
                 mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
                 RIGHTDOWN = true;
             }
@@ -138,6 +149,12 @@ namespace DiabloController
         {
             System.Windows.Forms.SendKeys.SendWait("t");
         }
+        // 背包
+        static public void KeyI()
+        {
+            System.Windows.Forms.SendKeys.SendWait("i");
+        }
+
 
         // 通过API控制鼠标
         [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SetCursorPos")]
@@ -153,5 +170,12 @@ namespace DiabloController
         const int MOUSEEVENTF_MIDDLEDOWN = 0x0020;
         const int MOUSEEVENTF_MIDDLEUP = 0x0040;
         const int MOUSEEVENTF_ABSOLUTE = 0x8000;
+
+        // 通过API控制键盘
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern byte MapVirtualKey(byte wCode, int wMap);
     }
 }

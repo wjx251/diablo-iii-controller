@@ -43,6 +43,7 @@ namespace DiabloController
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            
             verlink.Inlines.Add("VER:" + ver);
 
             timer.Interval = TimeSpan.FromMilliseconds(20);
@@ -212,6 +213,24 @@ namespace DiabloController
             if (gamePadState.Buttons.RightShoulder == ButtonState.Pressed)
             {
                 Diablo.KeyQ();
+            }
+
+
+            if (gamePadState.DPad.Up == ButtonState.Pressed)
+            {
+                Diablo.KeyM();
+            }
+            if (gamePadState.DPad.Down == ButtonState.Pressed)
+            {
+                Diablo.KeyX();
+            }
+            if (gamePadState.DPad.Left == ButtonState.Pressed)
+            {
+                Diablo.KeyT();
+            }
+            if (gamePadState.DPad.Right == ButtonState.Pressed)
+            {
+                Diablo.KeyI();
             }
         }
     }
