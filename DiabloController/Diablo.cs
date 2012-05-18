@@ -68,7 +68,6 @@ namespace DiabloController
         {
             if (LEFTDOWN)
             {
-                System.Windows.Forms.SendKeys.SendWait("+");
                 mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
                 LEFTDOWN = false;
             }
@@ -84,6 +83,7 @@ namespace DiabloController
         {
             if (!RIGHTDOWN)
             {
+                System.Windows.Forms.SendKeys.SendWait("+");
                 mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
                 RIGHTDOWN = true;
             }
