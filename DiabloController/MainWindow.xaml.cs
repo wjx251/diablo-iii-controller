@@ -25,10 +25,11 @@ namespace DiabloController
     public partial class MainWindow : Window
     {
         private GamePadState gamePadState = new GamePadState();
+        private JoyAPI.JOYINFOEX infoEx = new JoyAPI.JOYINFOEX();
         private DispatcherTimer timer = new DispatcherTimer();
 
         private int controllerType = 0;
-        private string ver = "0.0.6";
+        private string ver = "0.0.7";
 
         private bool left = false;
         private bool right = false;
@@ -60,6 +61,10 @@ namespace DiabloController
             
             verlink.Inlines.Add("VER:" + ver);
 
+            infoEx.dwSize = Marshal.SizeOf(typeof(JoyAPI.JOYINFOEX));
+            infoEx.dwFlags = 0x0080;
+
+
             timer.Interval = TimeSpan.FromMilliseconds(20);
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
@@ -87,9 +92,6 @@ namespace DiabloController
             else 
             {
                 // 判断其他控制器
-                JoyAPI.JOYINFOEX infoEx = new JoyAPI.JOYINFOEX();
-                infoEx.dwSize = Marshal.SizeOf(typeof(JoyAPI.JOYINFOEX));
-                infoEx.dwFlags = 0x0080;
                 int result =JoyAPI.joyGetPosEx(0, ref infoEx);
 
                 if (result == 0)
@@ -101,7 +103,12 @@ namespace DiabloController
                         this.Title = "暗黑破坏神3控制器（已连接普通游戏控制器）";
                     }
 
-                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON2) == JoyAPI.JOY_BUTTON2)
+
+                    // 移动
+                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos), stand);
+                    Diablo.MouseMove(newXY(infoEx.dwRpos), newXY(infoEx.dwZpos));
+
+                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON3) == JoyAPI.JOY_BUTTON3)
                     {
                         Diablo.MouseLeftDown(ref left);
                     }
@@ -110,13 +117,13 @@ namespace DiabloController
                         Diablo.MouseLeftUp(ref left);
                     }
 
-                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON3) == JoyAPI.JOY_BUTTON3)
+                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON2) == JoyAPI.JOY_BUTTON2)
                     {
                         Diablo.MouseRightDown(ref right);
                     }
                     else
                     {
-                        Diablo.MouseRightUp(ref left);
+                        Diablo.MouseRightUp(ref right);
                     }
 
 
@@ -136,21 +143,32 @@ namespace DiabloController
                     {
                         key2 = false;
                     }
+
+                    // 站立攻击
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON7) == JoyAPI.JOY_BUTTON7)
                     {
-                        Diablo.Key3(ref key3);
+                        Diablo.StandDown(ref stand);
                     }
                     else
                     {
-                        key3 = false;
+                        Diablo.StandUp(ref stand);
                     }
-                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON8) == JoyAPI.JOY_BUTTON8)
+
+                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON6) == JoyAPI.JOY_BUTTON6)
                     {
                         Diablo.Key4(ref key4);
                     }
                     else
                     {
                         key4 = false;
+                    }
+                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON8) == JoyAPI.JOY_BUTTON8)
+                    {
+                        Diablo.Key3(ref key3);
+                    }
+                    else
+                    {
+                        key3 = false;
                     }
 
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON5) == JoyAPI.JOY_BUTTON5)
@@ -161,14 +179,7 @@ namespace DiabloController
                     {
                         key5 = false;
                     }
-                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON6) == JoyAPI.JOY_BUTTON5)
-                    {
-                        Diablo.KeyQ(ref key6);
-                    }
-                    else
-                    {
-                        key6 = false;
-                    }
+                   
 
                     if (infoEx.dwPOV == JoyAPI.JOY_BUTTONUP)
                     {
@@ -203,18 +214,12 @@ namespace DiabloController
                     if (infoEx.dwPOV == JoyAPI.JOY_BUTTONRIGHT)
                     {
                         // 右
-                        Diablo.KeyM(ref key10);
+                        Diablo.KeyI(ref key10);
                     }
                     else
                     {
                         key10 = false;
                     }
-                    
-
-                    // 移动
-                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos), stand);
-                    Diablo.MouseMove(newXY(infoEx.dwRpos), newXY(infoEx.dwZpos));
-
 
                     this.Title = Math.Cos(Math.Atan(newXY(infoEx.dwYpos) / newXY(infoEx.dwXpos))).ToString();
                 }
@@ -278,6 +283,7 @@ namespace DiabloController
                 key2 = false;
             }
 
+            // 站立攻击
             if (gamePadState.Triggers.Left > 0.5)
             {
                 Diablo.StandDown(ref stand);
