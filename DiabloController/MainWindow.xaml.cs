@@ -212,7 +212,7 @@ namespace DiabloController
                     
 
                     // 移动
-                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos));
+                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos), stand);
                     Diablo.MouseMove(newXY(infoEx.dwRpos), newXY(infoEx.dwZpos));
 
 
@@ -235,7 +235,7 @@ namespace DiabloController
         private void Xbox(GamePadState gamePadState)
         {
             // 移动
-            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y);
+            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y, stand);
             Diablo.MouseMove(gamePadState.ThumbSticks.Right.X, -gamePadState.ThumbSticks.Right.Y);
 
             // 普通攻击
