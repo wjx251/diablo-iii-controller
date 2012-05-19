@@ -220,8 +220,6 @@ namespace DiabloController
                     {
                         key10 = false;
                     }
-
-                    this.Title = Math.Cos(Math.Atan(newXY(infoEx.dwYpos) / newXY(infoEx.dwXpos))).ToString();
                 }
                 else 
                 {
