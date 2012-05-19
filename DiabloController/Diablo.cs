@@ -14,7 +14,7 @@ namespace DiabloController
         static uint KEYEVENTF_KEYUP = 0x2;
 
         // 方向控制
-        static public void Move(float x, float y, bool stand)
+        static public void Move(float x, float y, bool stand, int x1, int y1)
         {
             if ((System.Math.Abs(x) > 0.1) || (System.Math.Abs(y) > 0.1))
             {
@@ -32,7 +32,7 @@ namespace DiabloController
                         y = -(float)Math.Sin(Math.Atan(y / x));
                     }
                 }
-                SetCursorPos((int)(x * 200) + ScreenCenterX, (int)(y * 200) + ScreenCenterY - 40);
+                SetCursorPos((int)(x * 200) + ScreenCenterX + x1, (int)(y * 200) + ScreenCenterY - 40 + y1);
 
                 if (!stand)
                 {

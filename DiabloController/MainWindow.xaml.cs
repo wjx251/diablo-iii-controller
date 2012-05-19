@@ -105,7 +105,7 @@ namespace DiabloController
 
 
                     // 移动
-                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos), stand);
+                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos), stand, (int)slider1.Value, (int)slider2.Value);
                     Diablo.MouseMove(newXY(infoEx.dwRpos), newXY(infoEx.dwZpos));
 
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON3) == JoyAPI.JOY_BUTTON3)
@@ -238,7 +238,7 @@ namespace DiabloController
         private void Xbox(GamePadState gamePadState)
         {
             // 移动
-            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y, stand);
+            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y, stand, (int)slider1.Value, (int)slider2.Value);
             Diablo.MouseMove(gamePadState.ThumbSticks.Right.X, -gamePadState.ThumbSticks.Right.Y);
 
             // 普通攻击

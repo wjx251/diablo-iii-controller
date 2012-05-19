@@ -7,5 +7,8 @@
         <TextBlock x:Name="txtForget" VerticalAlignment="Center" Margin="209,12,0,259" Height="20" HorizontalAlignment="Left" Width="112">
             <Hyperlink Name="verlink" NavigateUri="http://code.google.com/p/diablo-iii-controller/" RequestNavigate="Hyperlink_Click"></Hyperlink>
         </TextBlock>
+        <Slider Height="23" HorizontalAlignment="Left" Margin="12,207,0,0" Name="slider1" VerticalAlignment="Top" Width="82" Maximum="500" Minimum="-500" />
+        <Slider Height="23" HorizontalAlignment="Left" Margin="12,236,0,0" Name="slider2" VerticalAlignment="Top" Width="82" Maximum="500" Minimum="-500" />
+        <Label Content="移动中点修正" Height="28" HorizontalAlignment="Left" Margin="12,173,0,0" Name="label1" VerticalAlignment="Top" />
     </Grid>
 </Window>
