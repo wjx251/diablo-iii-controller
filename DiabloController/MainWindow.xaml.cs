@@ -29,7 +29,7 @@ namespace DiabloController
         private DispatcherTimer timer = new DispatcherTimer();
 
         private int controllerType = 0;
-        private string ver = "0.0.8";
+        private string ver = "0.0.9";
 
         private bool left = false;
         private bool right = false;
@@ -105,8 +105,15 @@ namespace DiabloController
 
 
                     // 移动
-                    Diablo.Move(newXY(infoEx.dwXpos), newXY(infoEx.dwYpos), stand, (int)slider1.Value, (int)slider2.Value);
-                    Diablo.MouseMove(newXY(infoEx.dwRpos), newXY(infoEx.dwZpos));
+                    Diablo.Move(
+                        leftH.IsChecked.Value ? -newXY(infoEx.dwXpos) : newXY(infoEx.dwXpos),
+                        leftZ.IsChecked.Value ? -newXY(infoEx.dwYpos) : newXY(infoEx.dwYpos), 
+                        stand, 
+                        (int)slider1.Value, 
+                        (int)slider2.Value);
+                    Diablo.MouseMove(
+                        rightH.IsChecked.Value ? -newXY(infoEx.dwRpos) : newXY(infoEx.dwRpos),
+                        rightZ.IsChecked.Value ? -newXY(infoEx.dwZpos) : newXY(infoEx.dwZpos));
 
                     if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON3) == JoyAPI.JOY_BUTTON3)
                     {
@@ -238,8 +245,15 @@ namespace DiabloController
         private void Xbox(GamePadState gamePadState)
         {
             // 移动
-            Diablo.Move(gamePadState.ThumbSticks.Left.X, -gamePadState.ThumbSticks.Left.Y, stand, (int)slider1.Value, (int)slider2.Value);
-            Diablo.MouseMove(gamePadState.ThumbSticks.Right.X, -gamePadState.ThumbSticks.Right.Y);
+            Diablo.Move(
+                leftH.IsChecked.Value ? -gamePadState.ThumbSticks.Left.X : gamePadState.ThumbSticks.Left.X,
+                leftZ.IsChecked.Value ? gamePadState.ThumbSticks.Left.Y : -gamePadState.ThumbSticks.Left.Y, 
+                stand, 
+                (int)slider1.Value, 
+                (int)slider2.Value);
+            Diablo.MouseMove(
+                rightH.IsChecked.Value ? -gamePadState.ThumbSticks.Right.X : gamePadState.ThumbSticks.Right.X,
+                rightZ.IsChecked.Value ? gamePadState.ThumbSticks.Right.Y : -gamePadState.ThumbSticks.Right.Y);
 
             // 普通攻击
             if (gamePadState.Buttons.A == ButtonState.Pressed)
