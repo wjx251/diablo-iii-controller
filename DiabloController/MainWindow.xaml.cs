@@ -112,14 +112,13 @@ namespace DiabloController
                         byte red = bmp.GetPixel(0, i).R;
                         if (red > 0xff - slider3.Value)
                         {
-
-                            if (mark + 3 < i)
+                            if (i - 3 > mark)
                             {
                                 vibration = new System.Threading.Thread(new System.Threading.ThreadStart(Vibration));
                                 vibration.Start();
-                                break;
                             }
                             mark = i;
+                            break;
                         }
                     }
                     catch { }
