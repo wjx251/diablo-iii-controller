@@ -31,7 +31,7 @@ namespace DiabloController
         private DispatcherTimer timerQ = new DispatcherTimer();
 
         private int controllerType = 0;
-        private string ver = "0.0.10";
+        private string ver = "0.0.10b";
 
         private bool left = false;
         private bool right = false;
