@@ -67,12 +67,12 @@ namespace DiabloController
             infoEx.dwFlags = 0x0080;
 
 
-            timer.Interval = TimeSpan.FromMilliseconds(20);
+            timer.Interval = TimeSpan.FromMilliseconds(5);
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
 
 
-            timerQ.Interval = TimeSpan.FromMilliseconds(20);
+            timerQ.Interval = TimeSpan.FromMilliseconds(10);
             timerQ.Tick += new EventHandler(timerQ_Tick);
             timerQ.Start();
 
@@ -82,7 +82,8 @@ namespace DiabloController
             gfxDisplay = System.Drawing.Graphics.FromHdc(hdlDisplay);
             bmp = new System.Drawing.Bitmap(1, bloodHeight, gfxDisplay);
             gfxBmp = System.Drawing.Graphics.FromImage(bmp);
-           
+
+            slider3.Value = 30;
         }
 
 
@@ -112,7 +113,8 @@ namespace DiabloController
                 for (int i = 0; i < bloodHeight; i++)
                 {
                     byte red = bmp.GetPixel(0, i).R;
-                    if (red > 0xf5)
+                    if (red > 0xff - slider3.Value)
+                    //if (red > 0xf0)
                     {
                         temp += "1";
                     }
@@ -122,9 +124,10 @@ namespace DiabloController
                     }
 
                 }
+                //textBox2.Text = temp;
+
                 if (mark + 3 < temp.LastIndexOf('1'))
                 {
-
                     vibration = new System.Threading.Thread(new System.Threading.ThreadStart(Vibration));
                     vibration.Start();
                 }
@@ -494,6 +497,11 @@ namespace DiabloController
         );
 
         [DllImport("gdi32.dll ")]
-        static public extern bool DeleteDC(IntPtr DC); 
+        static public extern bool DeleteDC(IntPtr DC);
+
+        private void slider3_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            textBox3.Text = slider3.Value.ToString();
+        } 
     }
 }

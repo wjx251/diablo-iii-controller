@@ -15,7 +15,9 @@
         <CheckBox Content="右摇杆横向反转" Height="16" HorizontalAlignment="Left" Margin="277,16,0,0" Name="rightH" VerticalAlignment="Top" />
         <CheckBox Content="右摇杆纵向反转" Height="16" HorizontalAlignment="Left" Margin="277,38,0,0" Name="rightZ" VerticalAlignment="Top" />
         <CheckBox Content="开启震动（仅360）" Height="16" HorizontalAlignment="Left" Margin="182,207,0,0" Name="checkBox1" VerticalAlignment="Top" Tag="123" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="227,229,0,0" Name="textBox1" VerticalAlignment="Top" Width="77" Text="432,-160" IsReadOnly="True" />
-        <Label Content="血量抓取坐标" Height="28" HorizontalAlignment="Left" Margin="139,227,0,0" Name="label2" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="191,229,0,0" Name="textBox1" VerticalAlignment="Top" Width="67" Text="432,-160" IsReadOnly="True" />
+        <Label Content="血坐标" Height="28" HorizontalAlignment="Left" Margin="139,227,0,0" Name="label2" VerticalAlignment="Top" />
+        <Slider Height="23" HorizontalAlignment="Left" Margin="264,229,0,0" Name="slider3" VerticalAlignment="Top" Width="50" Maximum="90" Minimum="0" LargeChange="10" SmallChange="10" ValueChanged="slider3_ValueChanged" IsSnapToTickEnabled="True" TickFrequency="10" />
+        <TextBox Height="23" Margin="320,229,0,0" Name="textBox3" VerticalAlignment="Top" IsReadOnly="True" HorizontalAlignment="Left" Width="27" />
     </Grid>
 </Window>
