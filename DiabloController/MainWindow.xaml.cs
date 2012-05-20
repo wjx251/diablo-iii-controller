@@ -30,7 +30,7 @@ namespace DiabloController
         private DispatcherTimer timerQ = new DispatcherTimer();
 
         private int controllerType = 0;
-        private string ver = "0.0.10b";
+        private string ver = "0.0.11";
 
         private bool left = false;
         private bool right = false;
@@ -92,45 +92,38 @@ namespace DiabloController
         System.Drawing.Graphics gfxDisplay;
         System.Drawing.Bitmap bmp;
         System.Drawing.Graphics gfxBmp;
-        string temp = "";
         int mark = 0;
-        IntPtr hdlScreen;
-        IntPtr hdlBmp;
 
         void timerQ_Tick(object sender, EventArgs e)
         {
             if (checkBox1.IsChecked.Value)
             {
-                hdlScreen = gfxDisplay.GetHdc();
-                hdlBmp = gfxBmp.GetHdc();
+                IntPtr hdlScreen = gfxDisplay.GetHdc();
+                IntPtr hdlBmp = gfxBmp.GetHdc();
 
                 BitBlt(hdlBmp, 0, 0, 1, bloodHeight, hdlScreen, bloodLeft, (int)SystemParameters.PrimaryScreenHeight - bloodHeight, 13369376);
                 gfxDisplay.ReleaseHdc(hdlScreen);
                 gfxBmp.ReleaseHdc(hdlBmp);
 
-                temp = "";
-                for (int i = 0; i < bloodHeight; i++)
+                for (int i = bloodHeight-1; i >=0; i--)
                 {
-                    byte red = bmp.GetPixel(0, i).R;
-                    if (red > 0xff - slider3.Value)
-                    //if (red > 0xf0)
+                    try
                     {
-                        temp += "1";
-                    }
-                    else
-                    {
-                        temp += "0";
-                    }
+                        byte red = bmp.GetPixel(0, i).R;
+                        if (red > 0xff - slider3.Value)
+                        {
 
+                            if (mark + 3 < i)
+                            {
+                                vibration = new System.Threading.Thread(new System.Threading.ThreadStart(Vibration));
+                                vibration.Start();
+                                break;
+                            }
+                            mark = i;
+                        }
+                    }
+                    catch { }
                 }
-                //textBox2.Text = temp;
-
-                if (mark + 3 < temp.LastIndexOf('1'))
-                {
-                    vibration = new System.Threading.Thread(new System.Threading.ThreadStart(Vibration));
-                    vibration.Start();
-                }
-                mark = temp.LastIndexOf('1');
             }
         }
         System.Threading.Thread vibration;
@@ -271,6 +264,12 @@ namespace DiabloController
                     {
                         bloodLeft = System.Windows.Forms.Control.MousePosition.X;
                         bloodHeight = (int)SystemParameters.PrimaryScreenHeight - System.Windows.Forms.Control.MousePosition.Y;
+
+                        if (bloodHeight > 200)
+                        {
+                            MessageBox.Show("请将鼠标指在左下方血量球的上边框再按BACK键！");
+                            bloodHeight = 160;
+                        }
 
                         textBox1.Text = bloodLeft + ",-" + bloodHeight;
                     }
@@ -464,6 +463,12 @@ namespace DiabloController
             {
                 bloodLeft = System.Windows.Forms.Control.MousePosition.X;
                 bloodHeight = (int)SystemParameters.PrimaryScreenHeight - System.Windows.Forms.Control.MousePosition.Y;
+
+                if (bloodHeight > 200)
+                {
+                    MessageBox.Show("请将鼠标指在左下方血量球的上边框再按BACK键！");
+                    bloodHeight = 160;
+                }
 
                 textBox1.Text = bloodLeft + ",-" + bloodHeight;
             }
