@@ -112,7 +112,7 @@ namespace DiabloController
                 for (int i = 0; i < bloodHeight; i++)
                 {
                     byte red = bmp.GetPixel(0, i).R;
-                    if (red > 0xf0)
+                    if (red > 0xf5)
                     {
                         temp += "1";
                     }
