@@ -25,6 +25,7 @@ namespace DiabloController
         public const int JOY_BUTTON6 = 0x0020;
         public const int JOY_BUTTON7 = 0x0040;
         public const int JOY_BUTTON8 = 0x0080;
+        public const int JOY_BUTTON9 = 0x0100;
 
         //
         public const int JOY_BUTTONUP = 0x0000;

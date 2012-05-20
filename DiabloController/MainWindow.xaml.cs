@@ -17,6 +17,7 @@ using System.Windows.Interop;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
+
 namespace DiabloController
 {
     /// <summary>
@@ -27,9 +28,10 @@ namespace DiabloController
         private GamePadState gamePadState = new GamePadState();
         private JoyAPI.JOYINFOEX infoEx = new JoyAPI.JOYINFOEX();
         private DispatcherTimer timer = new DispatcherTimer();
+        private DispatcherTimer timerQ = new DispatcherTimer();
 
         private int controllerType = 0;
-        private string ver = "0.0.9";
+        private string ver = "0.0.10";
 
         private bool left = false;
         private bool right = false;
@@ -68,6 +70,69 @@ namespace DiabloController
             timer.Interval = TimeSpan.FromMilliseconds(20);
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
+
+
+            timerQ.Interval = TimeSpan.FromMilliseconds(20);
+            timerQ.Tick += new EventHandler(timerQ_Tick);
+            timerQ.Start();
+
+            textBox1.Text = bloodLeft + ",-" + bloodHeight;
+        }
+
+
+        int bloodLeft = 430;
+        int bloodHeight = 160;
+
+        void timerQ_Tick(object sender, EventArgs e)
+        {
+            if (checkBox1.IsChecked.Value)
+            {
+                IntPtr hdlDisplay = CreateDC("DISPLAY", null, null, IntPtr.Zero);
+                System.Drawing.Graphics gfxDisplay = System.Drawing.Graphics.FromHdc(hdlDisplay);
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(1, bloodHeight, gfxDisplay);
+                System.Drawing.Graphics gfxBmp = System.Drawing.Graphics.FromImage(bmp);
+                IntPtr hdlScreen = gfxDisplay.GetHdc();
+                IntPtr hdlBmp = gfxBmp.GetHdc();
+
+                BitBlt(hdlBmp, 0, 0, 1, bloodHeight, hdlScreen, bloodLeft, (int)SystemParameters.PrimaryScreenHeight - bloodHeight, 13369376);
+                gfxDisplay.ReleaseHdc(hdlScreen);
+                gfxBmp.ReleaseHdc(hdlBmp);
+
+                string temp = "";
+                for (int i = 0; i < bloodHeight; i++)
+                {
+                    byte red = bmp.GetPixel(0, i).R;
+                    if (red > 0xf0)
+                    {
+                        temp += "1";
+                    }
+                    else
+                    {
+                        temp += "0";
+                    }
+
+                }
+                if (mark + 3 < temp.LastIndexOf('1'))
+                {
+                    System.Threading.Thread vibration = new System.Threading.Thread(new System.Threading.ThreadStart(Vibration));
+                    vibration.Start();
+                }
+                mark = temp.LastIndexOf('1');
+
+                bmp.Dispose();
+            }
+        }
+
+        int mark = 0;
+
+        void Vibration() 
+        {
+            if (controllerType == 1)
+            {
+                Microsoft.Xna.Framework.Input.GamePad.SetVibration(0, (float)0.5, (float)0.5);
+                System.Threading.Thread.Sleep(500);
+                Microsoft.Xna.Framework.Input.GamePad.SetVibration(0, (float)0.0, (float)0.0);
+            }
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -86,6 +151,7 @@ namespace DiabloController
                     image1.Source = new BitmapImage(new Uri(@"xbox.png", UriKind.RelativeOrAbsolute));
                     controllerType = 1;
                     this.Title = "暗黑破坏神3控制器（已连接XBOX游戏控制器）";
+                    checkBox1.IsEnabled = true;
                 }
                 Xbox(gamePadState);
             }
@@ -101,6 +167,8 @@ namespace DiabloController
                         image1.Source = new BitmapImage(new Uri(@"other.png", UriKind.RelativeOrAbsolute));
                         controllerType = 2;
                         this.Title = "暗黑破坏神3控制器（已连接普通游戏控制器）";
+                        checkBox1.IsEnabled = false;
+                        checkBox1.IsChecked = false;
                     }
 
 
@@ -186,6 +254,15 @@ namespace DiabloController
                     {
                         key5 = false;
                     }
+
+                    // 重置血量监视点
+                    if ((infoEx.dwButtons & JoyAPI.JOY_BUTTON9) == JoyAPI.JOY_BUTTON9)
+                    {
+                        bloodLeft = System.Windows.Forms.Control.MousePosition.X;
+                        bloodHeight = (int)SystemParameters.PrimaryScreenHeight - System.Windows.Forms.Control.MousePosition.Y;
+
+                        textBox1.Text = bloodLeft + ",-" + bloodHeight;
+                    }
                    
 
                     if (infoEx.dwPOV == JoyAPI.JOY_BUTTONUP)
@@ -233,6 +310,8 @@ namespace DiabloController
                     image1.Source = new BitmapImage(new Uri(@"null.png", UriKind.RelativeOrAbsolute));
                     controllerType = 0;
                     this.Title = "暗黑破坏神3控制器（未连接游戏控制器）";
+                    checkBox1.IsEnabled = false;
+                    checkBox1.IsChecked = false;
                 }
             }
         }
@@ -369,10 +448,43 @@ namespace DiabloController
                 key10 = false;
             }
 
-            if (gamePadState.Buttons.LeftStick == ButtonState.Pressed)
+            // 重置血量监视点
+            if (gamePadState.Buttons.Back == ButtonState.Pressed)
             {
-                Diablo.MouseLeftClick();
+                bloodLeft = System.Windows.Forms.Control.MousePosition.X;
+                bloodHeight = (int)SystemParameters.PrimaryScreenHeight - System.Windows.Forms.Control.MousePosition.Y;
+
+                textBox1.Text = bloodLeft + ",-" + bloodHeight;
             }
         }
+
+
+
+        [DllImport("gdi32.dll")]
+        private static extern bool BitBlt(
+                    IntPtr hdcDest,  //  目标设备的句柄  
+                    int nXDest,  //  目标对象的左上角的X坐标  
+                    int nYDest,  //  目标对象的左上角的X坐标  
+                    int nWidth,  //  目标对象的矩形的宽度  
+                    int nHeight,  //  目标对象的矩形的长度  
+                    IntPtr hdcSrc,  //  源设备的句柄  
+                    int nXSrc,  //  源对象的左上角的X坐标  
+                    int nYSrc,  //  源对象的左上角的X坐标  
+                    int dwRop  //  光栅的操作值  
+        );
+
+        [DllImport("gdi32.dll ")]
+        static public extern uint GetPixel(IntPtr hDC, int XPos, int YPos); 
+
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr CreateDC(
+                    string lpszDriver,  //  驱动名称  
+                    string lpszDevice,  //  设备名称  
+                    string lpszOutput,  //  无用，可以设定位"NULL"  
+                    IntPtr lpInitData  //  任意的打印机数据  
+        );
+
+        [DllImport("gdi32.dll ")]
+        static public extern bool DeleteDC(IntPtr DC); 
     }
 }
