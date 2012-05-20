@@ -77,28 +77,38 @@ namespace DiabloController
             timerQ.Start();
 
             textBox1.Text = bloodLeft + ",-" + bloodHeight;
+
+
+            gfxDisplay = System.Drawing.Graphics.FromHdc(hdlDisplay);
+            bmp = new System.Drawing.Bitmap(1, bloodHeight, gfxDisplay);
+            gfxBmp = System.Drawing.Graphics.FromImage(bmp);
+           
         }
 
 
         int bloodLeft = 430;
         int bloodHeight = 160;
+        IntPtr hdlDisplay = CreateDC("DISPLAY", null, null, IntPtr.Zero);
+        System.Drawing.Graphics gfxDisplay;
+        System.Drawing.Bitmap bmp;
+        System.Drawing.Graphics gfxBmp;
+        string temp = "";
+        int mark = 0;
+        IntPtr hdlScreen;
+        IntPtr hdlBmp;
 
         void timerQ_Tick(object sender, EventArgs e)
         {
             if (checkBox1.IsChecked.Value)
             {
-                IntPtr hdlDisplay = CreateDC("DISPLAY", null, null, IntPtr.Zero);
-                System.Drawing.Graphics gfxDisplay = System.Drawing.Graphics.FromHdc(hdlDisplay);
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(1, bloodHeight, gfxDisplay);
-                System.Drawing.Graphics gfxBmp = System.Drawing.Graphics.FromImage(bmp);
-                IntPtr hdlScreen = gfxDisplay.GetHdc();
-                IntPtr hdlBmp = gfxBmp.GetHdc();
+                hdlScreen = gfxDisplay.GetHdc();
+                hdlBmp = gfxBmp.GetHdc();
 
                 BitBlt(hdlBmp, 0, 0, 1, bloodHeight, hdlScreen, bloodLeft, (int)SystemParameters.PrimaryScreenHeight - bloodHeight, 13369376);
                 gfxDisplay.ReleaseHdc(hdlScreen);
                 gfxBmp.ReleaseHdc(hdlBmp);
 
-                string temp = "";
+                temp = "";
                 for (int i = 0; i < bloodHeight; i++)
                 {
                     byte red = bmp.GetPixel(0, i).R;
@@ -114,16 +124,15 @@ namespace DiabloController
                 }
                 if (mark + 3 < temp.LastIndexOf('1'))
                 {
-                    System.Threading.Thread vibration = new System.Threading.Thread(new System.Threading.ThreadStart(Vibration));
+
+                    vibration = new System.Threading.Thread(new System.Threading.ThreadStart(Vibration));
                     vibration.Start();
                 }
                 mark = temp.LastIndexOf('1');
-
-                bmp.Dispose();
             }
         }
-
-        int mark = 0;
+        System.Threading.Thread vibration;
+       
 
         void Vibration() 
         {
